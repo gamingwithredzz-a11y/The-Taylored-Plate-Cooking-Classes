@@ -1,0 +1,1 @@
+{"name":"taylored-eats","version":"0.1.0","private":true,"type":"module","engines":{"node":"24.x"},"scripts":{"start":"node app.mjs","test":"node --test app.test.mjs"}}
