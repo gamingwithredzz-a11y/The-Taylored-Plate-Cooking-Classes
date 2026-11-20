@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Taylored Eats · Customer screen demo</title>
+<style>
+:root{color-scheme:dark;--gold:#d6b66b;--muted:#b8b1a3;--line:#423a28}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#302919,#0c0d0e 65%);color:#f4eee0;font:15px/1.5 system-ui,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer;border:1px solid var(--line);background:#25221b;color:#f4eee0;border-radius:8px;padding:10px 15px}button:hover{border-color:var(--gold)}button:disabled{opacity:.45;cursor:not-allowed}.active,.primary{background:var(--gold);color:#18150f}header{max-width:1280px;margin:auto;padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px}h1,h2,h3{font-family:Georgia,serif;font-weight:400}h1{font-size:28px;margin:0;color:var(--gold)}small,.muted{color:var(--muted)}.tablet{max-width:1280px;margin:0 auto 30px;border:12px solid #1e1f20;border-radius:30px;background:#101112;box-shadow:0 30px 90px #0008;overflow:hidden}.bar{padding:16px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}.layout{display:grid;grid-template-columns:190px 1fr 330px;min-height:660px}nav{padding:18px 12px;border-right:1px solid var(--line)}nav button{width:100%;margin-bottom:6px;text-align:left;background:transparent;font-size:13px}main{padding:25px}h2{font-size:32px;margin:0 0 8px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:22px}.card{background:linear-gradient(135deg,#25221b,#18191a);border:1px solid var(--line);padding:19px;border-radius:12px;display:flex;flex-direction:column;gap:12px}.card h3{font-size:21px;margin:0;min-height:55px}.card button{margin-top:auto}.price{color:var(--gold)}aside{border-left:1px solid var(--line);padding:22px;background:#161615}label{display:block;margin:12px 0 5px;font-size:13px;color:var(--muted)}input,select,textarea{width:100%;background:#0e0f10;color:#eee;border:1px solid var(--line);padding:10px;border-radius:7px}textarea{resize:vertical}.row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:12px 0}.cartitem{border-bottom:1px solid var(--line);padding:12px 0}.cartitem button{padding:3px 10px}.wide{width:100%}.message{color:var(--gold);padding:12px 0}.tag{color:var(--gold);font-size:12px;text-transform:uppercase;letter-spacing:2px}.ticket{border:1px solid var(--line);border-radius:12px;padding:20px;margin:15px 0;background:#1c1d1b}.ticket h3{margin:0;font-size:24px}.controls{max-width:1280px;margin:0 auto 20px;padding:12px 28px;background:#18191a;border:1px dashed var(--line);border-radius:12px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}.controls select{width:auto}.hidden{display:none!important}a{color:var(--gold)}#manager{padding:28px}.foot{max-width:1200px;margin:20px auto;padding:0 20px;color:var(--muted);font-size:12px}@media(max-width:1000px){.layout{grid-template-columns:150px 1fr}.layout aside{grid-column:1/-1;border-left:0;border-top:1px solid var(--line)}.tablet{margin:0 10px 20px}}@media(max-width:600px){header{flex-direction:column;align-items:flex-start}.layout{grid-template-columns:1fr}nav{display:flex;overflow:auto;gap:5px}nav button{min-width:140px}.grid{grid-template-columns:1fr}.tablet{border-width:5px}main{padding:18px}}
+header>div:last-child,#manager,.controls,#customerTab,#managerTab{display:none!important}body{background:#101112}header{padding:16px 20px}h1{font-size:25px}.tablet{margin:0;border:0;border-radius:0;box-shadow:none;max-width:none}.layout{grid-template-columns:150px minmax(0,1fr) 300px;min-height:0}main{padding:18px}.grid{gap:10px}.card{padding:13px}.card h3{font-size:18px}nav{padding:12px 8px}aside{padding:16px}.foot{padding:10px 20px;margin:0}.demoBanner{padding:8px 20px;background:#352b18;color:#f2d99a;display:flex;align-items:center;justify-content:space-between;gap:8px}.demoBanner button{padding:5px 10px}.demoBanner select{width:auto;padding:5px}.bar{padding:10px 20px}@media(max-width:800px){.layout{grid-template-columns:120px 1fr}.layout aside{grid-column:1/-1}} </style>
+<div class="demoBanner"><span>SCREEN TEST · demo credit only · no staff notified</span><button id="demoReset">Reset demo</button><label style="margin:0">Hours <select id="demoHours"><option value="live">Current SLT</option><option value="open">Preview open</option><option value="closed">Preview closed</option></select></label></div><header><div><div class="tag">Southern soul. Caribbean flavor.</div><h1>Taylored Eats</h1><small>By The Taylored Plate · A little comfort. Beautifully delivered.</small></div><div><button id="customerTab" class="active">Customer tablet</button> <button id="managerTab">Manager HUD <span id="count">0</span></button></div></header>
+<div class="controls"><strong>Prototype controls</strong><span>Test credit only · no real L$</span><select id="clock" aria-label="Simulated opening hours"><option value="live">Current SLT</option><option value="open" selected>Preview open hours</option><option value="closed">Preview closed hours</option><option value="sunday">Preview Sunday</option></select><button id="topup">Add L$1,000 test credit</button><button id="reset">Reset demo</button></div>
+<div class="tablet"><div class="bar"><span id="status"></span><span>Mon–Sat · 10 AM–7 PM SLT · Sundays closed</span><span id="balance"></span></div><div id="customer" class="layout"><nav id="categories" aria-label="Menu categories"></nav><main><div class="tag">Your table, wherever you are</div><h2 id="categoryTitle"></h2><div class="muted">Made with care. Choose your favorites.</div><input id="search" aria-label="Search menu" placeholder="Search all dishes…"><div id="menu" class="grid"></div><h2 style="margin-top:32px;font-size:25px">Your orders</h2><div id="history"></div></main><aside><div class="tag">A meal to look forward to</div><h2 style="font-size:26px">Your order</h2><div id="cart"></div><label for="method">How would you like your order?</label><select id="method"><option value="delivery">Staff delivery · L$250</option><option value="pickup">Restaurant pickup · no fee</option></select><div id="delivery"><label for="slurl">Delivery SLURL</label><input id="slurl" type="text" placeholder="Paste your Second Life location link" autocomplete="off"><small>Paste your location’s SLURL. Delivery is available within our community regions.</small></div><p id="pickup" class="hidden"><a href="https://maps.secondlife.com/secondlife/Riverstone/193/11/22" target="_blank" rel="noopener">Collect at Riverstone · 193, 11, 22</a></p><label for="notes">Delivery / order notes</label><textarea id="notes" maxlength="500" placeholder="House name, door instructions…"></textarea><div id="totals"></div><button id="checkout" class="primary wide">Confirm & pay test credit</button><div id="message" class="message" role="status" aria-live="polite"></div><small>Staff prepare and hand over every order.</small></aside></div><section id="manager" class="hidden"><div class="tag">Taylored Eats · Manager HUD preview</div><h2>The service desk</h2><p class="muted">Incoming orders and fulfillment updates. Both approved managers will share this queue in the live system.</p><p class="muted">This local preview has no login or live manager authorization.</p><div id="tickets"></div></section></div><p class="foot">Taylored Eats screen demo. No real L$, avatar login, persistent account, or Manager HUD connection. Demo orders last only while this page is open. Oxtail Dinner awaits included-side choices.</p>
+<script id="menuData" type="application/json">{
+  "business": "The Taylored Plate",
+  "currency": "L$",
+  "source": "User-provided website menu text",
+  "items": [
+    {
+      "id": "ttp-001",
+      "category": "HALLOWEEN SAVORY👻",
+      "name": "Halloween Nacho Platter",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-002",
+      "category": "HALLOWEEN SAVORY👻",
+      "name": "Halloween Guacamole Nacho Platter",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-003",
+      "category": "HALLOWEEN CUPCAKES 🧛",
+      "name": "Midnight Bat Cupcakes",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-004",
+      "category": "HALLOWEEN CUPCAKES 🧛",
+      "name": "Crow Cupcakes",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-005",
+      "category": "HALLOWEEN CUPCAKES 🧛",
+      "name": "Dark Witch Cupcakes",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-006",
+      "category": "HALLOWEEN CUPCAKES 🧛",
+      "name": "Dark Forest Cupcakes",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-007",
+      "category": "HALLOWEEN CUPCAKES 🧛",
+      "name": "Ghost Cupcakes",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-008",
+      "category": "HALLOWEEN CUPCAKES 🧛",
+      "name": "Grave Yard Cupcakes",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-009",
+      "category": "HALLOWEEN CUPCAKES 🧛",
+      "name": "Mud Grave Cupcakes",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-010",
+      "category": "HALLOWEEN CUPCAKES 🧛",
+      "name": "Witch Moon Cupcakes",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-011",
+      "category": "HALLOWEEN CAKE",
+      "name": "Midnight Monster Cake",
+      "price_linden": 650
+    },
+    {
+      "id": "ttp-012",
+      "category": "FALL FAVORITE",
+      "name": "Taylored Pumpkin Pie",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-013",
+      "category": "HALLOWEEN COOKIES🧟",
+      "name": "2Da Grave Cookies",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-014",
+      "category": "HALLOWEEN COOKIES🧟",
+      "name": "Dracula Cookies",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-015",
+      "category": "HALLOWEEN COOKIES🧟",
+      "name": "Evil Worm Cookies",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-016",
+      "category": "HALLOWEEN COOKIES🧟",
+      "name": "Mummy Cookies",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-017",
+      "category": "HALLOWEEN COOKIES🧟",
+      "name": "Spooky Cookies",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-018",
+      "category": "🍂 Fall Favorites",
+      "name": "Ruby Red Pea Comfort Soup",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-019",
+      "category": "🍂 Fall Favorites",
+      "name": "Hearty Beef & Roots Soup",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-020",
+      "category": "🍂 Fall Favorites",
+      "name": "Slow-Braised Beef Supper",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-021",
+      "category": "🍂 Fall Favorites",
+      "name": "Golden Curry Goat Supper",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-022",
+      "category": "🍂 Fall Favorites",
+      "name": "Classic Sweet Potato Pie",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-023",
+      "category": "🍂 Fall Favorites",
+      "name": "Butter Pecan Indulgence",
+      "price_linden": 350
+    },
+    {
+      "id": "ttp-024",
+      "category": "Breakfast",
+      "name": "Omelette & Bacon Platter",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-025",
+      "category": "Breakfast",
+      "name": "Golden Sunrise Stack",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-026",
+      "category": "Breakfast",
+      "name": "Sunrise Taco Collection",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-027",
+      "category": "Breakfast",
+      "name": "The Sweet Swirl Collection",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-028",
+      "category": "Breakfast",
+      "name": "Wild Blueberry Crumble Muffin",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-029",
+      "category": "Lunch",
+      "name": "The Taylored Smash Burger & Fries",
+      "price_linden": 750
+    },
+    {
+      "id": "ttp-030",
+      "category": "Soups",
+      "name": "Signature Herb-Roasted Chicken Soup",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-031",
+      "category": "Soups",
+      "name": "Chef Taylor’s Caribbean Corn Velouté",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-032",
+      "category": "Soups",
+      "name": "Braised Oxtail & Island Roots",
+      "price_linden": 600
+    },
+    {
+      "id": "ttp-033",
+      "category": "Soups",
+      "name": "Golden Pumpkin Chicken Foot Soup",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-034",
+      "category": "Healthy Options",
+      "name": "Loaded Toast",
+      "price_linden": 300
+    },
+    {
+      "id": "ttp-035",
+      "category": "Healthy Options",
+      "name": "Avocado Toast",
+      "price_linden": 350
+    },
+    {
+      "id": "ttp-036",
+      "category": "Healthy Options",
+      "name": "Feta Romaine Salad",
+      "price_linden": 300
+    },
+    {
+      "id": "ttp-037",
+      "category": "Healthy Options",
+      "name": "Quinoa Salad",
+      "price_linden": 350
+    },
+    {
+      "id": "ttp-038",
+      "category": "Healthy Options",
+      "name": "Island Orchard Bowl",
+      "price_linden": 350
+    },
+    {
+      "id": "ttp-039",
+      "category": "Dinner Menu",
+      "name": "BBQ Ribs. with Corn and Collard Greens",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-040",
+      "category": "Dinner Menu",
+      "name": "Caribbean Brown Stew Fish",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-041",
+      "category": "Dinner Menu",
+      "name": "Spicy Chicken Bacon Alfredo",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-042",
+      "category": "Dinner Menu",
+      "name": "Caribbean Coconut Curry Chicken",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-043",
+      "category": "Dinner Menu",
+      "name": "Corned Beef & Rice Dinner",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-044",
+      "category": "Dinner Menu",
+      "name": "Oxtail Dinner",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-045",
+      "category": "Dinner Menu",
+      "name": "French Quarter Shrimp Rasta Pasta",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-046",
+      "category": "Dinner Menu",
+      "name": "Prime & Pearl",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-047",
+      "category": "Dinner Menu",
+      "name": "The Festival Coast Platter",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-048",
+      "category": "Dinner Menu",
+      "name": "Grandma’s Signature Meatball Supper",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-049",
+      "category": "Dinner Menu",
+      "name": "Artisan Beef Lasagna",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-050",
+      "category": "Dinner Menu",
+      "name": "Jerk Glazed Salmon",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-051",
+      "category": "Dinner Menu",
+      "name": "The Bayou Seafood Boil",
+      "price_linden": 1200
+    },
+    {
+      "id": "ttp-052",
+      "category": "Sides",
+      "name": "Chef Taylor’s Signature Deviled Eggs",
+      "price_linden": 300
+    },
+    {
+      "id": "ttp-053",
+      "category": "Sides",
+      "name": "Sweet Island Doubles",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-054",
+      "category": "Sides",
+      "name": "Sea & Spice Fritters",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-055",
+      "category": "Sides",
+      "name": "Southern Garden Potato Salad",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-056",
+      "category": "Sides",
+      "name": "The Golden Crust Mac",
+      "price_linden": 350
+    },
+    {
+      "id": "ttp-057",
+      "category": "Sides",
+      "name": "Golden Butter Rolls",
+      "price_linden": 350
+    },
+    {
+      "id": "ttp-058",
+      "category": "Sides",
+      "name": "Honey Butter Cornbread",
+      "price_linden": 350
+    },
+    {
+      "id": "ttp-059",
+      "category": "Sides",
+      "name": "Golden Buttermilk Fried Chicken",
+      "price_linden": 350
+    },
+    {
+      "id": "ttp-060",
+      "category": "Desserts",
+      "name": "Golden Banana Crème Royale",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-061",
+      "category": "Desserts",
+      "name": "Southern Banana Pudding",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-062",
+      "category": "Desserts",
+      "name": "Grandma’s Golden Apple Signature Pie",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-063",
+      "category": "Desserts",
+      "name": "Blueberry Midnight Estate Pie",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-064",
+      "category": "Desserts",
+      "name": "The Chocolate Velvet Reserve",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-065",
+      "category": "Desserts",
+      "name": "Key Lime Citrus Reverie",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-066",
+      "category": "Desserts",
+      "name": "Red Velvet Molten Romance",
+      "price_linden": 600
+    },
+    {
+      "id": "ttp-067",
+      "category": "Desserts",
+      "name": "Cookies & Cream Noir Cake",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-068",
+      "category": "Desserts",
+      "name": "Strawberry Grand Reserve Cheesecake",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-069",
+      "category": "Desserts",
+      "name": "Strawberry Blossom Torte",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-070",
+      "category": "Beverages",
+      "name": "Front Porch Refreshers",
+      "price_linden": 300
+    }
+  ],
+  "beverage_options": [
+    "Strawberry Bliss",
+    "Concord Grape",
+    "Orchard Orange",
+    "Classic Lemonade",
+    "Tropical Punch"
+  ],
+  "beverage_servings": 6,
+  "beverage_choices_required": 1
+}
+</script>
+<script>
+const catalog=JSON.parse(document.querySelector('#menuData').textContent),$=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),money=n=>'L$'+n.toLocaleString();
+const regions=['Evergreen Falls','Willow Grove','Cedar Ridge','Oakwood Lake','Harmony West','Riverstone','Harmony Pines','London Square','Rosewood Heights','Harmony Cove','Harmony Hills','Ohana Coast'];
+let balance=5000,cart=[],orders=[],category='Dinner Menu',sequence=1;
+const categories=[...new Set(catalog.items.map(i=>i.category))];
+function parseDeliverySLURL(raw){try{const u=new URL(raw.trim());let parts;if(['https:','http:'].includes(u.protocol)&&['maps.secondlife.com','slurl.com','www.slurl.com'].includes(u.hostname.toLowerCase())&&!u.username&&!u.password&&!u.port){parts=u.pathname.split('/').filter(Boolean);if(parts.shift()!=='secondlife')return null;}else if(u.protocol==='secondlife:'&&!u.host){parts=u.pathname.split('/').filter(Boolean);}else return null;if(parts.length!==4)return null;const name=decodeURIComponent(parts[0]),region=regions.find(r=>r.toLowerCase()===name.toLowerCase());if(!region)return null;const coords=parts.slice(1);if(coords.some((v,k)=>!/^\d+$/.test(v)||Number(v)>(k===2?4096:255)))return null;return 'https://maps.secondlife.com/secondlife/'+encodeURIComponent(region)+'/'+coords.map(Number).join('/');}catch{return null;}}
+function isOpen(){const mode=$('#clock').value;if(mode!=='live')return mode==='open';const p=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',weekday:'short',hour:'numeric',hourCycle:'h23'}).formatToParts(new Date());const get=t=>p.find(v=>v.type===t).value;return get('weekday')!=='Sun'&&Number(get('hour'))>=10&&Number(get('hour'))<19;}
+function statusText(){if(isOpen())return '● Open · accepting orders';if($('#clock').value==='sunday')return '○ Closed · opens Monday at 10 AM SLT';if($('#clock').value==='closed')return '○ Closed · checkout unavailable';const parts=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',weekday:'short',hour:'numeric',hourCycle:'h23'}).formatToParts(new Date()),day=parts.find(p=>p.type==='weekday').value,h=Number(parts.find(p=>p.type==='hour').value);return '○ Closed · opens '+(day==='Sun'||day==='Sat'&&h>=19?'Monday':h<10?'today':'tomorrow')+' at 10 AM SLT';}
+function menu(){ $('#categories').innerHTML=categories.map(c=>`<button data-category="${esc(c)}" class="${c===category?'active':''}">${esc(c)}</button>`).join('');$('#categoryTitle').textContent=$('#search').value?'Find your favorite':category;const q=$('#search').value.toLowerCase();$('#menu').innerHTML=catalog.items.filter(i=>q?i.name.toLowerCase().includes(q):i.category===category).map(i=>`<article class="card"><span class="tag">${esc(i.category)}</span><h3>${esc(i.name)}</h3><span class="price">${money(i.price_linden)}</span>${i.id==='ttp-070'?`<small>Six servings · choose one flavor</small><select aria-label="Refresher flavor" id="flavor"><option value="">Select flavor</option>${catalog.beverage_options.map(f=>`<option>${esc(f)}</option>`).join('')}</select>`:''}<button data-add="${i.id}" ${i.id==='ttp-044'?'disabled':''}>${i.id==='ttp-044'?'Side choices coming soon':'Add to order +'}</button></article>`).join('')||'<p>No dishes found.</p>';}
+function amounts(){const subtotal=cart.reduce((s,i)=>s+i.price_linden*i.qty,0),fee=cart.length&&$('#method').value==='delivery'?250:0;return {subtotal,fee,total:subtotal+fee};}
+function render(){const a=amounts();$('#status').textContent=statusText();$('#balance').textContent='Test balance · '+money(balance);$('#cart').innerHTML=cart.length?cart.map((i,k)=>`<div class="cartitem">${esc(i.name)}${i.flavor?' · '+esc(i.flavor):''}<div class="row"><span>${money(i.price_linden*i.qty)}</span><span><button data-change="${k}" data-delta="-1" aria-label="Remove one ${esc(i.name)}">−</button> ${i.qty} <button data-change="${k}" data-delta="1" aria-label="Add one ${esc(i.name)}">+</button></span></div></div>`).join(''):'<p class="muted">Your next favorite is on the menu.</p>';$('#totals').innerHTML=`<div class="row"><span>Subtotal</span><span>${money(a.subtotal)}</span></div><div class="row"><span>Delivery</span><span>${money(a.fee)}</span></div><div class="row"><strong>Total</strong><strong>${money(a.total)}</strong></div>`;$('#checkout').disabled=!isOpen()||!cart.length;$('#checkout').textContent=isOpen()?'Confirm & pay test credit':'Closed · ordering unavailable';$('#delivery').classList.toggle('hidden',$('#method').value==='pickup');$('#pickup').classList.toggle('hidden',$('#method').value!=='pickup');$('#count').textContent=orders.filter(o=>!['Delivered','Collected'].includes(o.status)).length;$('#history').innerHTML=orders.length?orders.map(o=>`<div class="ticket"><strong>${o.id}</strong> · ${esc(o.method)}<div class="price">${esc(o.status)}</div><small>${money(o.total)} · ${esc(o.location)}</small></div>`).join(''):'<p class="muted">Your order updates will appear here.</p>';$('#tickets').innerHTML=orders.length?orders.map(o=>`<article class="ticket"><div class="row"><h3>${o.id}</h3><span class="price">${esc(o.status)}</span></div><strong>Demo resident · ${esc(o.method)}</strong><p>${o.items.map(i=>`${i.qty} × ${esc(i.name)}${i.flavor?' ('+esc(i.flavor)+')':''}`).join('<br>')}</p><p><a href="${esc(o.method==='delivery'?o.location:'https://maps.secondlife.com/secondlife/Riverstone/193/11/22')}" target="_blank" rel="noopener">${esc(o.location)}</a></p>${o.notes?'<p>Notes: '+esc(o.notes)+'</p>':''}<div class="row"><strong>${money(o.total)}</strong>${next(o)?`<button class="primary" data-next="${o.id}">${esc(next(o))}</button>`:'<span>Complete</span>'}</div></article>`).join(''):'<div class="ticket">No orders yet. Place a test order from the customer tablet.</div>';}
+function next(o){const steps=o.method==='delivery'?['New','Accepted','Preparing','Out for delivery','Delivered']:['New','Accepted','Preparing','Ready for pickup','Collected'];return steps[steps.indexOf(o.status)+1];}
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.category){category=b.dataset.category;$('#search').value='';menu();}if(b.dataset.add){const i=catalog.items.find(i=>i.id===b.dataset.add);if(i.id==='ttp-044')return;const flavor=i.id==='ttp-070'?$('#flavor').value:'';if(i.id==='ttp-070'&&!flavor){$('#message').textContent='Choose a refresher flavor first.';return;}const existing=cart.find(c=>c.id===i.id&&c.flavor===flavor);if(existing)existing.qty++;else cart.push({...i,qty:1,flavor});$('#message').textContent='Added to your order.';render();}if(b.dataset.change!==undefined){const k=Number(b.dataset.change);cart[k].qty+=Number(b.dataset.delta);cart=cart.filter(i=>i.qty>0);render();}if(b.dataset.next){const o=orders.find(o=>o.id===b.dataset.next);o.status=next(o);render();}});
+$('#checkout').onclick=()=>{const say=t=>$('#message').textContent=t;if(!isOpen())return say('We are closed. Please return during opening hours.');if(!cart.length)return;const a=amounts(),method=$('#method').value;if(a.total>balance)return say('Insufficient test credit. Add test credit using the preview controls.');let location='Riverstone · 193, 11, 22';if(method==='delivery'){const parsed=parseDeliverySLURL($('#slurl').value);if(!parsed)return say('Paste a valid Second Life SLURL in one of our 12 community regions.');location=parsed;}balance-=a.total;const id='TP-'+String(sequence++).padStart(4,'0');orders.unshift({id,method,location,notes:$('#notes').value,items:cart.map(i=>({...i})),total:a.total,status:'New'});cart=[];$('#notes').value='';render();say(id+' saved in this browser only. No staff notified.');};
+$('#method').onchange=render;$('#clock').onchange=render;$('#search').oninput=menu;$('#topup').onclick=()=>{balance+=1000;render();};$('#reset').onclick=()=>{balance=5000;cart=[];orders=[];sequence=1;$('#message').textContent='Demo reset.';render();};function view(manager){$('#customer').classList.toggle('hidden',manager);$('#manager').classList.toggle('hidden',!manager);$('#customerTab').classList.toggle('active',!manager);$('#managerTab').classList.toggle('active',manager);}$('#customerTab').onclick=()=>view(false);$('#managerTab').onclick=()=>view(true);$('#clock').value='live';$('#demoHours').onchange=()=>{$('#clock').value=$('#demoHours').value;render();};$('#demoReset').onclick=()=>{$('#reset').onclick();$('#slurl').value='';$('#search').value='';menu();};menu();render();setInterval(render,60000);
+</script><script src="/screen-api.js"></script></html>
+
+
+

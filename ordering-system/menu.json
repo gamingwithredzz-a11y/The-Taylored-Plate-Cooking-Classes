@@ -1,0 +1,436 @@
+{
+  "business": "The Taylored Plate",
+  "currency": "L$",
+  "source": "User-provided website menu text",
+  "items": [
+    {
+      "id": "ttp-001",
+      "category": "HALLOWEEN SAVORY👻",
+      "name": "Halloween Nacho Platter",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-002",
+      "category": "HALLOWEEN SAVORY👻",
+      "name": "Halloween Guacamole Nacho Platter",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-003",
+      "category": "HALLOWEEN CUPCAKES 🧛",
+      "name": "Midnight Bat Cupcakes",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-004",
+      "category": "HALLOWEEN CUPCAKES 🧛",
+      "name": "Crow Cupcakes",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-005",
+      "category": "HALLOWEEN CUPCAKES 🧛",
+      "name": "Dark Witch Cupcakes",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-006",
+      "category": "HALLOWEEN CUPCAKES 🧛",
+      "name": "Dark Forest Cupcakes",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-007",
+      "category": "HALLOWEEN CUPCAKES 🧛",
+      "name": "Ghost Cupcakes",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-008",
+      "category": "HALLOWEEN CUPCAKES 🧛",
+      "name": "Grave Yard Cupcakes",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-009",
+      "category": "HALLOWEEN CUPCAKES 🧛",
+      "name": "Mud Grave Cupcakes",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-010",
+      "category": "HALLOWEEN CUPCAKES 🧛",
+      "name": "Witch Moon Cupcakes",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-011",
+      "category": "HALLOWEEN CAKE",
+      "name": "Midnight Monster Cake",
+      "price_linden": 650
+    },
+    {
+      "id": "ttp-012",
+      "category": "FALL FAVORITE",
+      "name": "Taylored Pumpkin Pie",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-013",
+      "category": "HALLOWEEN COOKIES🧟",
+      "name": "2Da Grave Cookies",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-014",
+      "category": "HALLOWEEN COOKIES🧟",
+      "name": "Dracula Cookies",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-015",
+      "category": "HALLOWEEN COOKIES🧟",
+      "name": "Evil Worm Cookies",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-016",
+      "category": "HALLOWEEN COOKIES🧟",
+      "name": "Mummy Cookies",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-017",
+      "category": "HALLOWEEN COOKIES🧟",
+      "name": "Spooky Cookies",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-018",
+      "category": "🍂 Fall Favorites",
+      "name": "Ruby Red Pea Comfort Soup",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-019",
+      "category": "🍂 Fall Favorites",
+      "name": "Hearty Beef & Roots Soup",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-020",
+      "category": "🍂 Fall Favorites",
+      "name": "Slow-Braised Beef Supper",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-021",
+      "category": "🍂 Fall Favorites",
+      "name": "Golden Curry Goat Supper",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-022",
+      "category": "🍂 Fall Favorites",
+      "name": "Classic Sweet Potato Pie",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-023",
+      "category": "🍂 Fall Favorites",
+      "name": "Butter Pecan Indulgence",
+      "price_linden": 350
+    },
+    {
+      "id": "ttp-024",
+      "category": "Breakfast",
+      "name": "Omelette & Bacon Platter",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-025",
+      "category": "Breakfast",
+      "name": "Golden Sunrise Stack",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-026",
+      "category": "Breakfast",
+      "name": "Sunrise Taco Collection",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-027",
+      "category": "Breakfast",
+      "name": "The Sweet Swirl Collection",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-028",
+      "category": "Breakfast",
+      "name": "Wild Blueberry Crumble Muffin",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-029",
+      "category": "Lunch",
+      "name": "The Taylored Smash Burger & Fries",
+      "price_linden": 750
+    },
+    {
+      "id": "ttp-030",
+      "category": "Soups",
+      "name": "Signature Herb-Roasted Chicken Soup",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-031",
+      "category": "Soups",
+      "name": "Chef Taylor’s Caribbean Corn Velouté",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-032",
+      "category": "Soups",
+      "name": "Braised Oxtail & Island Roots",
+      "price_linden": 600
+    },
+    {
+      "id": "ttp-033",
+      "category": "Soups",
+      "name": "Golden Pumpkin Chicken Foot Soup",
+      "price_linden": 500
+    },
+    {
+      "id": "ttp-034",
+      "category": "Healthy Options",
+      "name": "Loaded Toast",
+      "price_linden": 300
+    },
+    {
+      "id": "ttp-035",
+      "category": "Healthy Options",
+      "name": "Avocado Toast",
+      "price_linden": 350
+    },
+    {
+      "id": "ttp-036",
+      "category": "Healthy Options",
+      "name": "Feta Romaine Salad",
+      "price_linden": 300
+    },
+    {
+      "id": "ttp-037",
+      "category": "Healthy Options",
+      "name": "Quinoa Salad",
+      "price_linden": 350
+    },
+    {
+      "id": "ttp-038",
+      "category": "Healthy Options",
+      "name": "Island Orchard Bowl",
+      "price_linden": 350
+    },
+    {
+      "id": "ttp-039",
+      "category": "Dinner Menu",
+      "name": "BBQ Ribs. with Corn and Collard Greens",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-040",
+      "category": "Dinner Menu",
+      "name": "Caribbean Brown Stew Fish",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-041",
+      "category": "Dinner Menu",
+      "name": "Spicy Chicken Bacon Alfredo",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-042",
+      "category": "Dinner Menu",
+      "name": "Caribbean Coconut Curry Chicken",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-043",
+      "category": "Dinner Menu",
+      "name": "Corned Beef & Rice Dinner",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-044",
+      "category": "Dinner Menu",
+      "name": "Oxtail Dinner",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-045",
+      "category": "Dinner Menu",
+      "name": "French Quarter Shrimp Rasta Pasta",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-046",
+      "category": "Dinner Menu",
+      "name": "Prime & Pearl",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-047",
+      "category": "Dinner Menu",
+      "name": "The Festival Coast Platter",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-048",
+      "category": "Dinner Menu",
+      "name": "Grandma’s Signature Meatball Supper",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-049",
+      "category": "Dinner Menu",
+      "name": "Artisan Beef Lasagna",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-050",
+      "category": "Dinner Menu",
+      "name": "Jerk Glazed Salmon",
+      "price_linden": 1000
+    },
+    {
+      "id": "ttp-051",
+      "category": "Dinner Menu",
+      "name": "The Bayou Seafood Boil",
+      "price_linden": 1200
+    },
+    {
+      "id": "ttp-052",
+      "category": "Sides",
+      "name": "Chef Taylor’s Signature Deviled Eggs",
+      "price_linden": 300
+    },
+    {
+      "id": "ttp-053",
+      "category": "Sides",
+      "name": "Sweet Island Doubles",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-054",
+      "category": "Sides",
+      "name": "Sea & Spice Fritters",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-055",
+      "category": "Sides",
+      "name": "Southern Garden Potato Salad",
+      "price_linden": 400
+    },
+    {
+      "id": "ttp-056",
+      "category": "Sides",
+      "name": "The Golden Crust Mac",
+      "price_linden": 350
+    },
+    {
+      "id": "ttp-057",
+      "category": "Sides",
+      "name": "Golden Butter Rolls",
+      "price_linden": 350
+    },
+    {
+      "id": "ttp-058",
+      "category": "Sides",
+      "name": "Honey Butter Cornbread",
+      "price_linden": 350
+    },
+    {
+      "id": "ttp-059",
+      "category": "Sides",
+      "name": "Golden Buttermilk Fried Chicken",
+      "price_linden": 350
+    },
+    {
+      "id": "ttp-060",
+      "category": "Desserts",
+      "name": "Golden Banana Crème Royale",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-061",
+      "category": "Desserts",
+      "name": "Southern Banana Pudding",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-062",
+      "category": "Desserts",
+      "name": "Grandma’s Golden Apple Signature Pie",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-063",
+      "category": "Desserts",
+      "name": "Blueberry Midnight Estate Pie",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-064",
+      "category": "Desserts",
+      "name": "The Chocolate Velvet Reserve",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-065",
+      "category": "Desserts",
+      "name": "Key Lime Citrus Reverie",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-066",
+      "category": "Desserts",
+      "name": "Red Velvet Molten Romance",
+      "price_linden": 600
+    },
+    {
+      "id": "ttp-067",
+      "category": "Desserts",
+      "name": "Cookies & Cream Noir Cake",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-068",
+      "category": "Desserts",
+      "name": "Strawberry Grand Reserve Cheesecake",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-069",
+      "category": "Desserts",
+      "name": "Strawberry Blossom Torte",
+      "price_linden": 550
+    },
+    {
+      "id": "ttp-070",
+      "category": "Beverages",
+      "name": "Front Porch Refreshers",
+      "price_linden": 300
+    }
+  ],
+  "beverage_options": [
+    "Strawberry Bliss",
+    "Concord Grape",
+    "Orchard Orange",
+    "Classic Lemonade",
+    "Tropical Punch"
+  ],
+  "beverage_servings": 6,
+  "beverage_choices_required": 1
+}
