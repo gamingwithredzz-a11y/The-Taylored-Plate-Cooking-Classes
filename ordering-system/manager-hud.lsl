@@ -10,6 +10,7 @@ integer channel;
 integer listener;
 integer configuring;
 integer muted;
+integer minimized;
 integer retries;
 integer elapsed;
 key pending;
@@ -30,6 +31,7 @@ integer ready()
 }
 paint(string connection)
 {
+    if (minimized) { llSetText("TE • Manager\nTouch to expand", GOLD, 1.0); return; }
     string label = "TAYLORED EATS\nMANAGER • DEMO\n" + connection;
     if (orderID != "")
         label += "\n#" + llGetSubString(orderID, 0, 7) + " • " + orderStatus
@@ -47,13 +49,19 @@ request(string path, string method, string body, string kind)
     elapsed = 0;
     if (pending == NULL_KEY) { retries = 6; paint("HTTP throttle • retrying"); }
 }
+sayChunks(string text)
+{
+    integer offset;
+    for (offset=0; offset<llStringLength(text); offset+=220)
+        llOwnerSay(llGetSubString(text,offset,offset+219));
+}
 details()
 {
     if (orderID == "") { llOwnerSay("No order selected. Touch Queue."); return; }
-    llOwnerSay("DEMO ORDER #" + llGetSubString(orderID, 0, 7) + " • " + orderStatus
+    sayChunks("DEMO ORDER #" + llGetSubString(orderID, 0, 7) + " • " + orderStatus
         + "\nCustomer demo ID: " + llJsonGetValue(selected, ["customer"])
         + "\n" + llJsonGetValue(selected, ["summary"]));
-    llOwnerSay("Method: " + llJsonGetValue(selected, ["method"])
+    sayChunks("Method: " + llJsonGetValue(selected, ["method"])
         + "\nLocation: " + llJsonGetValue(selected, ["location"])
         + "\nTotal: L$" + llJsonGetValue(selected, ["total"])
         + "\nCustomer notes: " + llJsonGetValue(selected, ["notes"]));
@@ -75,7 +83,7 @@ menu()
     configuring = FALSE;
     llDialog(llGetOwner(), "Taylored Eats Manager HUD\nDEMO orders only; no real payments.\n"
        + "Queue selects the first active order; Next moves through active orders.\nAdvance moves the selected order one step; all managers see the change.",
-       ["Queue", "Next", "Details", "Advance", "Refresh", "Mute", "Setup", "Close"], channel);
+       ["Queue", "Next", "Details", "Advance", "Refresh", "Mute", "Setup", "Minimize", "Close"], channel);
 }
 boot()
 {
@@ -100,6 +108,9 @@ default
     state_entry()
     {
         llSetObjectName("Taylored Eats Manager HUD");
+        minimized = (integer)llLinksetDataRead("te.manager.minimized");
+        if (minimized) llSetScale(<0.015,0.055,0.025>);
+        else llSetScale(<0.015,0.18,0.10>);
         llSetColor(<0.025,0.025,0.03>, ALL_SIDES);
         llSetPrimitiveParams([PRIM_FULLBRIGHT, ALL_SIDES, TRUE]);
         boot();
@@ -111,6 +122,11 @@ default
     {
         if (llDetectedKey(0) != llGetOwner() || !authorized()) return;
         if (!llGetAttached()) { llOwnerSay("Attach this object to a HUD point first. Rezzed objects do not receive alerts."); return; }
+        if (minimized)
+        {
+            minimized = FALSE; llLinksetDataWrite("te.manager.minimized", "0");
+            llSetScale(<0.015,0.18,0.10>); paint("Expanded");
+        }
         menu();
     }
     listen(integer c, string name, key who, string message)
@@ -134,6 +150,11 @@ default
         if (message == "Setup") { configuring = TRUE; llTextBox(llGetOwner(), "Paste YOUR private manager key. Never share it or put it in the website URL.", channel); }
         else if (message == "Queue") { queueIndex=0; request("/staff/queue?index=0", "GET", "", "queue"); }
         else if (message == "Next") { ++queueIndex; request("/staff/queue?index="+(string)queueIndex, "GET", "", "queue"); }
+        else if (message == "Minimize")
+        {
+            minimized = TRUE; llLinksetDataWrite("te.manager.minimized", "1");
+            llSetScale(<0.015,0.055,0.025>); paint("Minimized");
+        }
         else if (message == "Details") details();
         else if (message == "Refresh") request("/staff/queue?index="+(string)queueIndex, "GET", "", "queue");
         else if (message == "Mute") { muted = !muted; llOwnerSay("HUD chat alerts muted: " + (string)muted); }
@@ -194,6 +215,10 @@ default
         else { selected=""; orderID=""; orderStatus=""; paint("No active demo orders"); }
     }
 }
+
+
+
+
 
 
 

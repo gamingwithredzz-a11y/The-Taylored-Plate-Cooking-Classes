@@ -28,6 +28,8 @@ CONTROLS
 Queue: first active order. Next: next active order. Details: items, notes,
 demo customer ID, SLURL and total. Advance: next fulfillment status.
 Refresh: fetch the current queue position. Mute: toggle owner chat alerts.
+Minimize: collapse to a small TE tab. Touch the tab to expand again.
+Minimizing preserves polling and alerts and is remembered after reset.
 Every manager's HUD polls every 10 seconds, with a one-minute error backoff.
 On reconnection it catches up from its stored cursor, including alerts from
 while it was detached. Large summaries are clearly flagged as truncated.
@@ -40,9 +42,14 @@ TEST STATUS
 Node HTTP-handler tests pass for private staff access, per-manager keys,
 independent feeds, duplicate suppression, synchronized status updates,
 stale-update refusal, active queues and demo database cursor reset.
-LSL compilation and in-world end-to-end alert receipt remain to be tested.
+LSL compiled successfully as Mono in Aurora Viewer on November 21, 2026.
+A Manager HUD object was created, worn on Center 2, moved to the right side,
+and its dialog controls verified. Private key pairing and end-to-end alert
+receipt remain pending. Backend commit 2720704 is live on Render.
 Free Render SQLite storage can reset on service restart or redeploy.
 These alerts are for demo orders until real avatar identity/payments exist.
 
 REFERENCE
 https://create.secondlife.com/script/lsl-reference/functions/llhttprequest/
+
+
