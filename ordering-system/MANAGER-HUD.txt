@@ -1,0 +1,48 @@
+TAYLORED EATS MANAGER HUD — DEMO INTEGRATION
+
+The backend now stores staff events atomically with each new order and status
+change. Separate managers receive the same feed with independent cursors.
+Duplicate checkout retries produce one alert event, not duplicate orders.
+The current service still has anonymous demo customers and no real payments.
+
+SERVER CONFIGURATION
+Set TE_MANAGER_TOKENS on the Taylored Eats Render service to a JSON object:
+{"2cf44513-e9e7-48f2-b717-b8ffe5117a37":"FIRST_64_HEX_SECRET","436b1c38-e897-491a-80fb-6a7d5c4864c0":"DIFFERENT_64_HEX_SECRET"}
+Generate each secret from 32 random bytes. Do not commit secrets or put them
+in URLs. With the variable absent, every staff request is denied.
+Each token is bound to one authorized owner. Owner headers alone do not
+authenticate an avatar: possession of the corresponding secret is required.
+A leaked credential can impersonate that manager. Keep HUD scripts/objects
+under trusted control and rotate the affected secret if it is exposed.
+
+HUD INSTALLATION
+Create one small box prim (suggested size 0.18 x 0.02 x 0.10 m), insert
+manager-hud.lsl, compile as Mono, take a copy and attach to HUD Center 2.
+Move the panel into a comfortable corner. Touch it, choose Setup and enter
+that manager's private key. Do not send keys in public chat.
+The owner must be one of the two UUIDs above. Alerts run only while attached;
+rezzed copies stop polling. This is a functional first HUD using a panel,
+owner-only chat and native dialog controls, not the final decorative mesh.
+
+CONTROLS
+Queue: first active order. Next: next active order. Details: items, notes,
+demo customer ID, SLURL and total. Advance: next fulfillment status.
+Refresh: fetch the current queue position. Mute: toggle owner chat alerts.
+Every manager's HUD polls every 10 seconds, with a one-minute error backoff.
+On reconnection it catches up from its stored cursor, including alerts from
+while it was detached. Large summaries are clearly flagged as truncated.
+New / Accepted / Preparing / Out for delivery / Delivered for delivery;
+New / Accepted / Preparing / Ready for pickup / Collected for pickup.
+Concurrent changes are refused with a refresh message, preventing stale
+managers from advancing an order past a step accidentally.
+
+TEST STATUS
+Node HTTP-handler tests pass for private staff access, per-manager keys,
+independent feeds, duplicate suppression, synchronized status updates,
+stale-update refusal, active queues and demo database cursor reset.
+LSL compilation and in-world end-to-end alert receipt remain to be tested.
+Free Render SQLite storage can reset on service restart or redeploy.
+These alerts are for demo orders until real avatar identity/payments exist.
+
+REFERENCE
+https://create.secondlife.com/script/lsl-reference/functions/llhttprequest/

@@ -5,10 +5,12 @@ import {DatabaseSync} from 'node:sqlite';
 import {randomBytes,randomUUID,createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {createService} from './order-core.mjs';
+import {staffConfig,createStaffHandler} from './staff.mjs';
 
 // Public DEMO gateway. Internal test identities and manager credentials never
 // cross the HTTP boundary. Real avatars, money and staff alerts are unconnected.
-export function buildApp({database=process.env.TE_DATABASE??'taylored-eats-demo.sqlite',now}={}){
+export function buildApp({database=process.env.TE_DATABASE??'taylored-eats-demo.sqlite',now,managerTokens}={}){
+ const credentials=staffConfig(managerTokens);
  const token=randomBytes(32).toString('hex');
  const core=createService({database,token,...(now?{now}:{})});
  const db=new DatabaseSync(database);
@@ -22,6 +24,7 @@ export function buildApp({database=process.env.TE_DATABASE??'taylored-eats-demo.
   req.url=path;req.method=method;req.headers={authorization:`Bearer ${token}`,'x-test-avatar':avatar,...(key?{'idempotency-key':key}:{})};
   return new Promise(resolve=>core.server.emit('request',req,{statusCode:200,setHeader(){},end(text){resolve({status:this.statusCode,body:JSON.parse(text)})}}));
  }
+ const staff=createStaffHandler({invoke,credentials});
  async function handler(req,res){
   const send=(code,body)=>{res.statusCode=code;res.end(JSON.stringify(body))};
   res.setHeader('Content-Type','application/json');res.setHeader('Cache-Control','no-store');
@@ -31,6 +34,7 @@ export function buildApp({database=process.env.TE_DATABASE??'taylored-eats-demo.
    if(req.method==='GET'&&u.pathname==='/healthz')return send(200,{ok:true,product:'Taylored Eats',mode:'demo',realPayments:false});
    if(req.method==='GET'&&['/','/customer-screen.html'].includes(u.pathname)){res.setHeader('Content-Type','text/html; charset=utf-8');return res.end(screen)}
    if(req.method==='GET'&&u.pathname==='/screen-api.js'){res.setHeader('Content-Type','application/javascript; charset=utf-8');return res.end(adapter)}
+   if(u.pathname.startsWith('/staff/'))return await staff(req,res,u,send);
    if(!u.pathname.startsWith('/api/'))return send(404,{error:'Not found'});
    const ip=req.socket?.remoteAddress??'local',stamp=Date.now(),prior=rates.get(ip);
    if(prior&&stamp-prior.start<60000){if(++prior.count>120)return send(429,{error:'Please wait a minute'})}else rates.set(ip,{start:stamp,count:1});

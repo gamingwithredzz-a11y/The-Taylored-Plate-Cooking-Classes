@@ -10,7 +10,7 @@ async function sync(){
 }
 async function initialize(){
  balance=0;render();$('#checkout').disabled=true;
- try{await api('session',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});connected=true;await sync();$('#message').textContent='Server demo connected. No real L$ or staff alerts.'}
+ try{await api('session',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});connected=true;await sync();$('#message').textContent='Server demo connected. No real L$. Orders enter the Manager HUD queue.'}
  catch(e){$('#message').textContent=e.message;$('#checkout').disabled=true}
 }
 $('#demoHours').closest('label').style.display='none';$('#clock').value='live';
@@ -24,10 +24,11 @@ $('#checkout').onclick=async()=>{
  busy=true;const controls=[...document.querySelectorAll('button,input,select,textarea')].map(el=>({el,disabled:el.disabled}));controls.forEach(({el})=>el.disabled=true);
  try{
   const result=await api('orders',{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':pending.key},body:fingerprint});
-  balance=result.balance;cart=[];pending=null;$('#notes').value='';$('#message').textContent='Demo order saved on server. Real staff are not notified.';
+  balance=result.balance;cart=[];pending=null;$('#notes').value='';$('#message').textContent='Demo order saved for the Manager HUD queue. No real L$ charged.';
  }catch(e){$('#message').textContent=e.message+' Retry uses the same request key.'}
  finally{busy=false;controls.forEach(({el,disabled})=>el.disabled=disabled);await sync().catch(()=>render())}
 };
-document.querySelector('.demoBanner span').textContent='SERVER DEMO · no real L$ · no staff alerts';
-document.querySelector('.foot').textContent='Taylored Eats server demo. Anonymous browser session only; not your Second Life account. Demo data can reset on service restart. Real payments and staff alerts are disabled.';
+document.querySelector('.demoBanner span').textContent='SERVER DEMO · no real L$ · Manager HUD queue';
+document.querySelector('.foot').textContent='Taylored Eats server demo. Anonymous browser session only; not your Second Life account. Demo data can reset on service restart. Real payments are disabled. Authorized, connected Manager HUDs receive demo order alerts.';
 initialize();setInterval(()=>{if(connected&&!busy)sync().catch(()=>{})},20000);
+

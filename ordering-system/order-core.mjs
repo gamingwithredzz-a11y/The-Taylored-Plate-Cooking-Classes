@@ -32,7 +32,8 @@ export function createService({ database = 'taylored-plate-test.sqlite', token, 
     CREATE TABLE IF NOT EXISTS accounts (avatar TEXT PRIMARY KEY, balance INTEGER NOT NULL DEFAULT 0 CHECK(balance >= 0));
     CREATE TABLE IF NOT EXISTS orders (id TEXT PRIMARY KEY, avatar TEXT NOT NULL, body TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS ledger (id TEXT PRIMARY KEY, avatar TEXT NOT NULL, amount INTEGER NOT NULL, kind TEXT NOT NULL, created TEXT NOT NULL);
-    CREATE TABLE IF NOT EXISTS requests (key TEXT PRIMARY KEY, fingerprint TEXT NOT NULL, response TEXT NOT NULL);`);
+    CREATE TABLE IF NOT EXISTS requests (key TEXT PRIMARY KEY, fingerprint TEXT NOT NULL, response TEXT NOT NULL);
+    CREATE TABLE IF NOT EXISTS staff_events (seq INTEGER PRIMARY KEY AUTOINCREMENT, body TEXT NOT NULL);`);
   const balance = avatar => db.prepare('SELECT balance FROM accounts WHERE avatar=?').get(avatar)?.balance ?? 0;
   function transact(key, fingerprint, action) {
     if (typeof key !== 'string' || !/^[a-zA-Z0-9_-]{8,100}$/.test(key)) fail(400,'Supply an Idempotency-Key of 8–100 letters, digits, underscores or hyphens.');
@@ -89,9 +90,17 @@ export function createService({ database = 'taylored-plate-test.sqlite', token, 
           const order={id:randomUUID(),avatar,items,method:body.method,location,notes:body.notes??'',subtotal,fee,total,status:'New',created:now().toISOString()};
           db.prepare('UPDATE accounts SET balance=balance-? WHERE avatar=?').run(total,avatar);
           db.prepare('INSERT INTO orders VALUES (?,?,?)').run(order.id,avatar,JSON.stringify(order));
+          db.prepare('INSERT INTO staff_events(body) VALUES (?)').run(JSON.stringify(order));
           db.prepare('INSERT INTO ledger VALUES (?,?,?,?,?)').run(order.id,avatar,-total,'order',order.created);
           return {order,balance:balance(avatar),mode:'test'};
         });
+      } else if (req.method==='GET' && url.pathname==='/staff/feed') {
+        if(!manager) fail(403,'Manager access required');
+        const after=Number(url.searchParams.get('after')??0);
+        if(!Number.isSafeInteger(after)||after<0) fail(400,'Invalid cursor');
+        const latest=db.prepare('SELECT coalesce(max(seq),0) AS seq FROM staff_events').get().seq;
+        const row=db.prepare('SELECT seq,body FROM staff_events WHERE seq>? ORDER BY seq LIMIT 1').get(after>latest?0:after);
+        result={cursor:row?.seq??latest,reset:after>latest,order:row?JSON.parse(row.body):null,mode:'demo'};
       } else if (req.method==='GET' && url.pathname==='/orders') {
         const rows=manager?db.prepare('SELECT body FROM orders').all():db.prepare('SELECT body FROM orders WHERE avatar=?').all(avatar);
         result={orders:rows.map(r=>JSON.parse(r.body)),mode:'test'};
@@ -104,7 +113,9 @@ export function createService({ database = 'taylored-plate-test.sqlite', token, 
           if(body.expectedStatus!==order.status) fail(409,'Order changed; refresh queue');
           const steps=order.method==='delivery'?['New','Accepted','Preparing','Out for delivery','Delivered']:['New','Accepted','Preparing','Ready for pickup','Collected'];
           const next=steps[steps.indexOf(order.status)+1];if(!next)fail(409,'Order complete');
-          order.status=next;db.prepare('UPDATE orders SET body=? WHERE id=?').run(JSON.stringify(order),order.id);return {order,mode:'test'};
+          order.status=next;db.prepare('UPDATE orders SET body=? WHERE id=?').run(JSON.stringify(order),order.id);
+          db.prepare('INSERT INTO staff_events(body) VALUES (?)').run(JSON.stringify(order));
+          return {order,mode:'test'};
         });
       } else fail(404,'Endpoint missing');
       res.end(JSON.stringify(result));
